@@ -10,8 +10,10 @@ const db_name = process.env.DATABASE_NAME
 const collection_name = 'boards'
 
 var connect = async () => {
+    console.log('Connecting to database: ', uri)
     return MongoClient.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
         .catch(err => {
+            onsole.log('Connection error: ', err)
         })
 }
 

@@ -1,0 +1,18 @@
+version: '3'
+services:
+  tateti:
+    image: tateti-app
+    restart: always
+    container_name: tateti
+    ports:
+      - 9080:9080
+    depends_on:
+      - mongo-db
+  mongo-db:
+    image: mongo
+    restart: always
+    container_name: mongo-db
+    ports:
+      - 27017:27017
+    volumes:
+      - $HOME/data/tateti:/data/db
