@@ -79,7 +79,7 @@ var create_player = async (name) => {
 }
 
 module.exports = {
-    createPlayer: create_player, 
-    getPlayer: get_player,
-    getPlayers: get_players
+    create_player: create_player, 
+    get_player: get_player,
+    get_players: get_players
 }

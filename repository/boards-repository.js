@@ -13,11 +13,11 @@ var connect = async () => {
     console.log('Connecting to database: ', uri)
     return MongoClient.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
         .catch(err => {
-            onsole.log('Connection error: ', err)
+            console.log('Connection error: ', err)
         })
 }
 
-var getBoards = async () => {
+var get_boards = async () => {
     var boards = []
     client = await connect()
     if (!client) {
@@ -35,7 +35,7 @@ var getBoards = async () => {
     return boards
 }
 
-var getBoard = async (id) => {
+var get_board = async (id) => {
     var board
     client = await connect()
     if (!client) {
@@ -56,8 +56,8 @@ var getBoard = async (id) => {
     return board
 }
 
-var createBoard = async (id) => {
-    var player = await players.getPlayer(id)
+var create_board = async (id) => {
+    var player = await players.get_player(id)
     client = await connect()
     if (!client) {
         return
@@ -83,19 +83,19 @@ var createBoard = async (id) => {
     }
 }
 
-var createMovement = async (move,board_id) => {
+var make_move = async (move,board_id) => {
     var board = await get_board(board_id)
     if (board.finished) {
         throw new BadRequestError("The game with this board ID is now over.")
     }
-    var player = await players.getPlayer(move.player)
+    var player = await players.get_player(move.player)
     client = await connect()
     if (!client) {
         return
     }
     try {
         //This logic in a correct implementation should be in a service layer, 
-        //but as this project is small so I choose to put some busissnes validation here.
+        //but as this project is small so I choose to put some busissnes validation here
         if ((board.turn && (player._id == board.player_x)) || (!board.turn && (player._id == board.player_y))) {
             throw new BadRequestError("It isn't your turn")
         }
@@ -105,7 +105,7 @@ var createMovement = async (move,board_id) => {
         var space = moves[index]
         var turn = board.turn
         //This logic in a correct implementation should be in a service layer, 
-        //but as this project is small so I choose to put some busissnes validation here.
+        //but as this project is small so I choose to put some busissnes validation here
         if (index < 0 || index > 8 || space != "") {
             throw new BadRequestError('Ilegal move')
         }
@@ -121,11 +121,11 @@ var createMovement = async (move,board_id) => {
         const db = client.db(db_name)
         let collection = db.collection(collection_name)
         await collection.updateOne({ _id: board._id }, { $set: update })
-        board = await get_board(board._id)
+        board = await get_board(move.board)
         if (!board.player_o && !board.finished && !board.turn) {
             letter = "O"
             moves = board.table_board
-            index = getMachineMovement(moves)
+            index = get_machine_move(moves)
             moves[index] = letter
             turn = board.turn
             winning_result = check_winning(moves, board.player_x, board.player_y)
@@ -145,7 +145,7 @@ var createMovement = async (move,board_id) => {
     }
 }
 
-const getMachineMovement = (moves) => {
+const get_machine_move = (moves) => {
     var emptyes = []
     for (let index = 0; index < moves.length; index++) {
         const element = moves[index]
@@ -217,9 +217,8 @@ const check_line = (moves, a, b, c) => {
 }
 
 module.exports = {
-    getBoards: getBoards,
-    getBoard: getBoard,
-    createBoard: createBoard,
-    createMovement: createMovement
+    get_boards: get_boards,
+    get_board: get_board,
+    create_board: create_board,
+    make_move: make_move
 }
-

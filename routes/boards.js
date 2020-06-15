@@ -5,7 +5,7 @@ var repository = require('../repository/boards-repository');
 router.get('/',
   async (req, res) => {
     try {
-      var boards = await repository.getBoards()
+      var boards = await repository.get_boards()
       res.json({
         status: 200,
         message: 'success',
@@ -21,7 +21,7 @@ router.get('/',
 
 router.route('/:id').get(
   async (req, res) => {
-    var board = await repository.getBoard(req.params.id)
+    var board = await repository.get_board(req.params.id)
     try {
       res.json({
         status: 200,
@@ -39,7 +39,7 @@ router.route('/:id').get(
 router.route('/:player_id').post(
   async (req, res) => {
     try {
-      let result = await repository.createBoard(req.params.player_id)
+      let result = await repository.create_board(req.params.player_id)
       res.json({
         status: 201,
         message: "created",
@@ -56,7 +56,7 @@ router.route('/:player_id').post(
 router.route('/move/:board_id').put(
   async (req, res) => {
     try {
-      await repository.createMovement(req.body,req.params.board_id)
+      await repository.make_move(req.body,req.params.board_id)
       res.json({
         status: 200,
         message: "moved"

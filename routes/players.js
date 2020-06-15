@@ -5,7 +5,7 @@ var repository = require('../repository/players-repository');
 router.get('/', 
     async (req, res) => {
         try {
-            players = await repository.getPlayers()
+            players = await repository.get_players()
             res.json({
                 status: 200,
                 message: "success",
@@ -24,7 +24,7 @@ router.get('/',
 router.post('/:name',
     async (req, res) => {
         try {
-            let result = await repository.createPlayer(req.params.name)
+            let result = await repository.create_player(req.params.name)
             res.json({
                 status: 201,
                 message: "created",
@@ -42,7 +42,7 @@ router.post('/:name',
 router.get('/:id',
     async (req, res) => {
         try {
-            let player = await repository.getPlayer(req.params.id)
+            let player = await repository.get_player(req.params.id)
             res.json({
                 status: 200,
                 message: "success",
