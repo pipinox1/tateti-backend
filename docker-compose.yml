@@ -1,7 +1,7 @@
 version: '3'
 services:
   tateti:
-    image: tateti-app
+    image: pipinox1/tateti-app
     restart: always
     container_name: tateti
     ports:
