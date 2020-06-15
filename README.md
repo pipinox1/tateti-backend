@@ -1,44 +1,30 @@
-# api-tic-tac-toe
+# NODEJS Backend and DB
 
-## DATABASE with Docker
-> docker pull mongo
->
-> docker run -d -p 27017-27019:27017-27019 --name mongodboards mongo
+## Setup y Deployment del proyecto
 
-#### Mongo console
-> docker exec -it mongodboards mongo
 
-#### Create database with this command in mongo db console
-> use (db name)
+In order to deploy this application, we simply need to have Docker and Docker Compose installed. And run the following command: 
+"docker-compose up ." in the root folder of project.
 
-## Endpoints
-host: localhost = 127.0.0.1
-port: 9080
-Port can be change in .env file
+Or you can make a file called docker-compose.yml and copy and paste the following lines and run "docker-compose up ." in the folder where you created the file.
 
-### GET /players
-
-Get all existents players
-
-### POST /players/{name}
-
-Create a player by name
-
-### GET /boards
-
-Get all existents boards
-
-### POST /boards/{player_id}
-
-Creates a board with a player id
-
-### PUT /boards/move
-
-Make a move in the board
-- body:
-
-        {
-          "board": {board_id},
-          "player": {player_id},
-          "move": {integer from 0 to 8}
-        }
+```
+version: '3'
+services:
+  tateti:
+    image: pipinox1/tateti-app
+    restart: always
+    container_name: tateti
+    ports:
+      - 9080:9080
+    depends_on:
+      - mongo-db
+  mongo-db:
+    image: mongo
+    restart: always
+    container_name: mongo-db
+    ports:
+      - 27017:27017
+    volumes:
+      - $HOME/data/tateti:/data/db
+```
